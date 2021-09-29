@@ -124,7 +124,7 @@ function BrowserPanel({
   useEffect(() => {
     async function fetchData(url, processResponse) {
       try {
-        const response = await fetch(url);
+        const response = await fetch(url, { mode: "cors" });
         const json = await response.json();
         processResponse(json);
       } catch (error) {
