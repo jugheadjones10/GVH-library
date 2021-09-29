@@ -55,7 +55,7 @@ function BookBasketPanel({
 
   return (
     value === index && (
-      <div>
+      <>
         <Box
           sx={{
             display: "flex",
@@ -118,7 +118,7 @@ function BookBasketPanel({
             </MasonryItem>
           ))}
         </Masonry>
-      </div>
+      </>
     )
   );
 }

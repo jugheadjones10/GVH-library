@@ -198,7 +198,11 @@ function BrowserPanel({
           label="Language"
         />
       </Box>
-      <Masonry columns={aboveMD ? 4 : aboveSM ? 3 : 2} gap={8}>
+      <Masonry
+        css={{ overflow: "visible" }}
+        columns={aboveMD ? 4 : aboveSM ? 3 : 2}
+        gap={8}
+      >
         <MasonryItem key="sizeListener">
           <Skeleton variant="rectangular" height="5px" width="100%">
             <div id="hello" width="100%" height="100%" ref={widthRef}></div>
