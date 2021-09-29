@@ -409,7 +409,7 @@ function useSearch(items, searchTerm) {
 }
 
 function processUrl(url, width) {
-  return `https://gvh-library-imgproxy.herokuapp.com/signature/width:${width}/resizing_type:fill/format:webp/plain/${encodeURIComponent(
+  return `https://gvh-library.b-cdn.net/signature/width:${width}/resizing_type:fill/format:webp/plain/${encodeURIComponent(
     url
   )}`;
 }
