@@ -34,6 +34,7 @@ import MasonryItem from "@mui/lab/MasonryItem";
 import Skeleton from "@mui/material/Skeleton";
 
 import bookPlaceholder from "./book-placeholder.png";
+import endpoints from "./api";
 
 const heights = [
   150, 100, 160, 190, 110, 250, 130, 200, 130, 90, 100, 150, 190, 170, 80, 150,
@@ -107,7 +108,7 @@ function BrowserPanel({
       setBookBasket((x) => x.filter((y) => y.number !== book.number));
     } else {
       setBookBasket((x) => {
-        if (x.length === 10) {
+        if (x.length === 30) {
           alert("You cannot choose more than 30 books");
           return x;
         } else {
@@ -132,10 +133,10 @@ function BrowserPanel({
         alert(error);
       }
     }
-    fetchData("http://165.22.241.81:8888/initial-books", (json) => {
+    fetchData(endpoints.production + "/initial-books", (json) => {
       setBooks(json);
     });
-    fetchData("http://165.22.241.81:8888/books", (json) => {
+    fetchData(endpoints.production + "/books", (json) => {
       setBooks((prev) => prev.concat(json));
     });
   }, []);

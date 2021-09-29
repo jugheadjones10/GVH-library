@@ -17,6 +17,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
 import bookPlaceholder from "./book-placeholder.png";
+import endpoints from "./api";
 
 function BookBasketPanel({
   value,
@@ -41,7 +42,7 @@ function BookBasketPanel({
     }),
     onSubmit: (values) => {
       values["books"] = bookBasket;
-      fetch("http://165.22.241.81:8888/submit-books", {
+      fetch(endpoints.production + "/submit-books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
