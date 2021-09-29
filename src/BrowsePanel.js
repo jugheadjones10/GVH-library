@@ -128,6 +128,7 @@ function BrowserPanel({
         const json = await response.json();
         processResponse(json);
       } catch (error) {
+        console.log(error);
         alert(error);
       }
     }
