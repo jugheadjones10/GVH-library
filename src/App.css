@@ -1,3 +1,20 @@
 html {
   scroll-behavior: smooth;
 }
+
+.masonry {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  width: auto;
+}
+.masonry-column {
+  padding-left: 10px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.masonry-column > div {
+  /* change div to reference your elements you put in <Masonry> */
+  margin-bottom: 10px;
+}

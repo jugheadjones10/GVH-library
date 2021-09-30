@@ -6,7 +6,6 @@ import "./App.css";
 //that can be accessed with sx.
 
 import React, { useState } from "react";
-import { Helmet } from "react-helmet";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -35,13 +34,6 @@ function App() {
 
   return (
     <Container maxWidth={aboveMD ? "md" : aboveSM ? "sm" : "xs"}>
-      <Helmet>
-        <link
-          rel="stylesheet"
-          href="https://unpkg.com/flexmasonry/dist/flexmasonry.css"
-        />
-        <script src="https://unpkg.com/flexmasonry/dist/flexmasonry.js"></script>
-      </Helmet>
       <Typography variant="h3" m={3} align="center">
         GVH Library
       </Typography>

@@ -11,6 +11,8 @@ import React, {
 } from "react";
 
 import useIntersectionObserver from "@react-hook/intersection-observer";
+import FlexSearch from "flexsearch";
+import Masonry from "react-masonry-css";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -23,15 +25,15 @@ import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
-import FlexSearch from "flexsearch";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import Masonry from "@mui/lab/Masonry";
+// import Masonry from "@mui/lab/Masonry";
 import MasonryItem from "@mui/lab/MasonryItem";
 import Skeleton from "@mui/material/Skeleton";
+import { useTheme } from "@mui/material/styles";
 
 import bookPlaceholder from "./book-placeholder.png";
 import endpoints from "./api";
@@ -51,6 +53,7 @@ function BrowserPanel({
   aboveMD,
   setValue,
 }) {
+  const theme = useTheme();
   const [books, setBooks] = useState([]);
 
   const [pageSize, setPageSize] = useState(0);
@@ -199,91 +202,97 @@ function BrowserPanel({
         />
       </Box>
       <Masonry
+        breakpointCols={{
+          [theme.breakpoints.values.xl]: 4,
+          [theme.breakpoints.values.md]: 3,
+          [theme.breakpoints.values.sm]: 2,
+        }}
+        className="masonry"
+        columnClassName="masonry-column"
         css={{ overflow: "visible" }}
-        columns={aboveMD ? 4 : aboveSM ? 3 : 2}
-        gap={8}
+        // columns={aboveMD ? 4 : aboveSM ? 3 : 2}
+        // gap={8}
       >
-        <MasonryItem key="sizeListener">
-          <Skeleton variant="rectangular" height="5px" width="100%">
-            <div id="hello" width="100%" height="100%" ref={widthRef}></div>
-          </Skeleton>
-        </MasonryItem>
+        <div key="sizeListener" ref={widthRef}>
+          <Skeleton variant="rectangular" height="5px" width="100%" />
+        </div>
         {processedBooks.length === 0 && books.length === 0
           ? heights.map((height, index) => (
-              <MasonryItem key={index}>
+              <div key={index}>
                 <Skeleton variant="rectangular" height={height} />
-              </MasonryItem>
+              </div>
             ))
           : processedBooks
               .filter(filterFunction)
               .slice(0, pageSize)
               .map((book) => (
-                <MasonryItem
+                <div
                   key={book.number}
                   onClick={(e) => {
                     if (isChoosing) {
                       onBookClicked(book);
                     }
                   }}
+                  css={{ position: "relative" }}
                 >
-                  <div css={{ position: "relative" }}>
-                    {isChoosing &&
-                      (isChosen(book.number) ? (
-                        <Box
-                          sx={{
-                            bgcolor: "text.secondary",
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <CheckIcon
-                            fontSize="large"
-                            css={{ color: "white" }}
-                          />
-                        </Box>
-                      ) : (
-                        <CheckBoxOutlineBlankIcon
-                          fontSize="large"
-                          css={{
-                            position: "absolute",
-                            color: "white",
-                            top: 10,
-                            left: 10,
-                          }}
-                        />
-                      ))}
-                    <Stack>
-                      <img
-                        loading="lazy"
-                        width="100%"
-                        src={
-                          book.imageurl
-                            ? processUrl(book.imageurl, masonWidth)
-                            : bookPlaceholder
-                        }
-                        alt={book.title}
-                      />
-
+                  {isChoosing &&
+                    (isChosen(book.number) ? (
                       <Box
                         sx={{
-                          color: "white",
-                          p: 1,
                           bgcolor: "text.secondary",
+                          position: "absolute",
+                          width: "100%",
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        {book.title}
+                        <CheckIcon fontSize="large" css={{ color: "white" }} />
                       </Box>
-                    </Stack>
-                  </div>
-                </MasonryItem>
+                    ) : (
+                      <CheckBoxOutlineBlankIcon
+                        fontSize="large"
+                        css={{
+                          position: "absolute",
+                          color: "white",
+                          top: 10,
+                          left: 10,
+                        }}
+                      />
+                    ))}
+                  <Stack>
+                    <ImageLoad
+                      src={
+                        book.imageurl
+                          ? processUrl(book.imageurl, masonWidth)
+                          : bookPlaceholder
+                      }
+                    />
+                    {/* <img */}
+                    {/*   loading="lazy" */}
+                    {/*   width="100%" */}
+                    {/*   src={ */}
+                    {/*     book.imageurl */}
+                    {/*       ? processUrl(book.imageurl, masonWidth) */}
+                    {/*       : bookPlaceholder */}
+                    {/*   } */}
+                    {/*   alt={book.title} */}
+                    {/* /> */}
+
+                    <Box
+                      sx={{
+                        color: "white",
+                        p: 1,
+                        bgcolor: "text.secondary",
+                      }}
+                    >
+                      {book.title}
+                    </Box>
+                  </Stack>
+                </div>
               ))}
-        <MasonryItem key="listener">
-          <div width="100%" ref={setRef} />
-        </MasonryItem>
+        <div width="100%" key="listener" ref={setRef} />
       </Masonry>
       <a href="#top">
         <KeyboardArrowUpIcon
@@ -416,6 +425,34 @@ function processUrl(url, width) {
   return `https://gvh-library.b-cdn.net/signature/width:${width}/resizing_type:fill/format:webp/plain/${encodeURIComponent(
     url
   )}`;
+}
+
+function ImageLoad({ src }) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // start loading original image
+    const imageToLoad = new Image();
+    imageToLoad.src = src;
+    imageToLoad.onload = () => {
+      // When image is loaded replace the src and set loading to false
+      setLoading(false);
+    };
+  }, [src]);
+
+  return loading ? (
+    <Skeleton variant="rectangular" height={250} />
+  ) : (
+    <img
+      alt="hey"
+      loading="lazy"
+      src={src}
+      style={{
+        opacity: loading ? 0.5 : 1,
+        transition: "opacity .15s linear",
+      }}
+    />
+  );
 }
 
 export default BrowserPanel;
