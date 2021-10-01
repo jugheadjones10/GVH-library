@@ -20,7 +20,6 @@ import Backdrop from "@mui/material/Backdrop";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import bookPlaceholder from "./book-placeholder.png";
 import endpoints from "./api";
 
 function BookBasketPanel({ value, index, bookBasket, setBookBasket }) {

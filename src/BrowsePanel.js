@@ -16,9 +16,6 @@ import FlexSearch from "flexsearch";
 import Masonry from "react-masonry-css";
 
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckIcon from "@mui/icons-material/Check";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
@@ -31,10 +28,8 @@ import Skeleton from "@mui/material/Skeleton";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import bookPlaceholder from "./book-placeholder.png";
 import endpoints from "./api";
 import FilterFormControl from "./FilterFormControl";
-import ImageLoad from "./ImageLoad";
 import BrowsePanelBook from "./BrowsePanelBook";
 
 const heights = [

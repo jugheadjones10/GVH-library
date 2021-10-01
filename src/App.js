@@ -76,6 +76,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   top: 0,
   "& .MuiBadge-badge": {
     top: 13,
+    color: "white",
   },
 }));
 
