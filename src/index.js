@@ -9,7 +9,13 @@ import { createTheme } from "@mui/material/styles";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={createTheme({})}>
+    <ThemeProvider
+      theme={createTheme({
+        palette: {
+          primary: { main: "#ADBE60" },
+        },
+      })}
+    >
       <App />
     </ThemeProvider>
   </React.StrictMode>,

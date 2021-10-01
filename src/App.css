@@ -1,5 +1,6 @@
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 .masonry {
@@ -7,6 +8,7 @@ html {
   display: -ms-flexbox; /* Not needed if autoprefixing */
   display: flex;
   width: auto;
+  margin-left: -10px; /* gutter offset */
 }
 .masonry-column {
   padding-left: 10px; /* gutter size */

@@ -24,7 +24,6 @@ function App() {
   const [bookBasket, setBookBasket] = useState([]);
   const theme = useTheme();
 
-  const aboveXS = useMediaQuery(theme.breakpoints.up("xs"));
   const aboveSM = useMediaQuery(theme.breakpoints.up("sm"));
   const aboveMD = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -34,7 +33,7 @@ function App() {
 
   return (
     <Container maxWidth={aboveMD ? "md" : aboveSM ? "sm" : "xs"}>
-      <Typography variant="h3" m={3} align="center">
+      <Typography sx={{ color: "#64291B" }} variant="h3" m={3} align="center">
         GVH Library
       </Typography>
 
@@ -58,9 +57,6 @@ function App() {
         index={0}
         bookBasket={bookBasket}
         setBookBasket={setBookBasket}
-        aboveXS={aboveXS}
-        aboveSM={aboveSM}
-        aboveMD={aboveMD}
         setValue={setValue}
       />
       <GuidelinesPanel value={value} index={1} />
@@ -69,9 +65,6 @@ function App() {
         index={2}
         bookBasket={bookBasket}
         setBookBasket={setBookBasket}
-        aboveXS={aboveXS}
-        aboveSM={aboveSM}
-        aboveMD={aboveMD}
       />
     </Container>
   );
@@ -88,6 +81,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const StyledTab = styled(Tab)({
   textTransform: "none",
+  fontWeight: "bold",
 });
 
 export default App;
