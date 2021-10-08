@@ -27,7 +27,6 @@ function BookBasketPanel({ value, index, bookBasket, setBookBasket }) {
     setBookBasket((x) => [...x.filter((y) => y.number !== book.number)]);
   }
   const theme = useTheme();
-  const aboveMD = useMediaQuery(theme.breakpoints.up("md"));
 
   const formik = useFormik({
     initialValues: { home: "" },

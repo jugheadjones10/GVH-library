@@ -3216,6 +3216,11 @@
   "resolved" "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
   "version" "3.7.2"
 
+"blurhash@^1.1.1", "blurhash@^1.1.4":
+  "integrity" "sha512-MXIPz6zwYUKayju+Uidf83KhH0vodZfeRl6Ich8Gu+KGl0JgKiFq9LsfqV7cVU5fKD/AotmduZqvOfrGKOfTaA=="
+  "resolved" "https://registry.npmjs.org/blurhash/-/blurhash-1.1.4.tgz"
+  "version" "1.1.4"
+
 "bn.js@^4.0.0", "bn.js@^4.1.0", "bn.js@^4.11.9":
   "integrity" "sha512-E6QoYqCKZfgatHTdHzs1RRKP7ip4vvm+EyRUeE2RF0NblwVvb0p6jSVeNTOFxPn26QXN2o6SMfNxKp6kU8zQaw=="
   "resolved" "https://registry.npmjs.org/bn.js/-/bn.js-4.11.9.tgz"
@@ -10150,6 +10155,11 @@
     "regenerator-runtime" "^0.13.7"
     "whatwg-fetch" "^3.4.1"
 
+"react-blurhash@^0.1.3":
+  "integrity" "sha512-Q9lqbXg92NU6/2DoIl/cBM8YWL+Z4X66OiG4aT9ozOgjBwx104LHFCH5stf6aF+s0Q9Wf310Ul+dG+VXJltmPg=="
+  "resolved" "https://registry.npmjs.org/react-blurhash/-/react-blurhash-0.1.3.tgz"
+  "version" "0.1.3"
+
 "react-dev-utils@^11.0.3":
   "integrity" "sha512-dx0LvIGHcOPtKbeiSUM4jqpBl3TcY7CDjZdfOIcKeznE7BWr9dg0iPG90G5yfVQ+p/rGNMXdbfStvzQZEVEi4A=="
   "resolved" "https://registry.npmjs.org/react-dev-utils/-/react-dev-utils-11.0.4.tgz"
@@ -10337,7 +10347,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@*", "react@^0.14.0 || ^15.0.0-0 || ^16.0.0-0 || ^17.0.0", "react@^16.3.0 || ^17.0.0", "react@^17.0.2", "react@>= 16", "react@>= 16.9.0", "react@>=16.0.0", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.9.0", "react@17.0.2":
+"react@*", "react@^0.14.0 || ^15.0.0-0 || ^16.0.0-0 || ^17.0.0", "react@^16.3.0 || ^17.0.0", "react@^17.0.2", "react@>= 16", "react@>= 16.9.0", "react@>=15", "react@>=16.0.0", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.9.0", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"

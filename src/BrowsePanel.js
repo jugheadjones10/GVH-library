@@ -36,11 +36,22 @@ const heights = [
   150, 100, 160, 190, 110, 250, 130, 200, 130, 90, 100, 150, 190, 170, 80, 150,
   100, 150, 230, 110, 150, 130, 100, 120, 90, 100, 150, 90, 190, 110,
 ];
+function useImageWidth(theme) {
+  const widthObject = {
+    md: 206,
+    sm: 177,
+    xs: 201,
+  };
 
+  const aboveMD = useMediaQuery(theme.breakpoints.up("md")) ? "md" : false;
+  const aboveSM = useMediaQuery(theme.breakpoints.up("sm")) ? "sm" : false;
+  const aboveXS = useMediaQuery(theme.breakpoints.up("xs")) ? "xs" : false;
+
+  const which = aboveMD || aboveSM || aboveXS;
+  console.log("WHICH" + widthObject[which]);
+  return widthObject[which];
+}
 function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
-  const theme = useTheme();
-  const aboveMD = useMediaQuery(theme.breakpoints.up("md"));
-
   const [books, setBooks] = useState([]);
   const [pageSize, setPageSize] = useState(0);
   const [isChoosing, setChoosing] = useState(false);
@@ -50,6 +61,14 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
 
   const widthRef = useRef(null);
   const masonWidth = useElementWidth(widthRef, books);
+
+  const theme = useTheme();
+  const imageWidth = useImageWidth(theme);
+  const aboveMD = useMediaQuery(theme.breakpoints.up("md"));
+
+  useEffect(() => {
+    console.log(masonWidth);
+  }, [masonWidth]);
 
   useEffect(() => {
     setPageSize((size) => size + 20);
@@ -128,10 +147,10 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
         alert(error);
       }
     }
-    fetchData(endpoints.production + "/initial-books", (json) => {
+    fetchData(endpoints.test + "/initial-books", (json) => {
       setBooks(json);
     });
-    fetchData(endpoints.production + "/books", (json) => {
+    fetchData(endpoints.test + "/books", (json) => {
       setBooks((prev) => prev.concat(json));
     });
   }, []);
@@ -222,8 +241,9 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
               .slice(0, pageSize)
               .map((book) => (
                 <BrowsePanelBook
+                  key={book.number}
                   book={book}
-                  masonWidth={masonWidth}
+                  imageWidth={imageWidth}
                   isChoosing={isChoosing}
                   isChosen={isChosen}
                   onBookClicked={onBookClicked}

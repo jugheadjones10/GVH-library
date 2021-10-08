@@ -15,14 +15,13 @@ import ImageLoad from "./ImageLoad";
 
 function BrowsePanelBook({
   book,
-  masonWidth,
+  imageWidth,
   isChoosing,
   isChosen,
   onBookClicked,
 }) {
   return (
     <div
-      key={book.number}
       onClick={() => {
         if (isChoosing) {
           onBookClicked(book);
@@ -58,9 +57,14 @@ function BrowsePanelBook({
         ))}
       <Stack>
         <ImageLoad
+          bookHeight={
+            book.imageurl ? (book.height / book.width) * imageWidth : null
+          }
+          bookWidth={book.imageurl ? imageWidth : null}
+          blurhash={book.blurhash}
           src={
             book.imageurl
-              ? processUrl(book.imageurl, masonWidth)
+              ? processUrl(book.imageurl, imageWidth)
               : bookPlaceholder
           }
         />
