@@ -20,8 +20,6 @@ import Backdrop from "@mui/material/Backdrop";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import endpoints from "./api";
-
 function BookBasketPanel({ value, index, bookBasket, setBookBasket }) {
   function onBookRemoved(book) {
     setBookBasket((x) => [...x.filter((y) => y.number !== book.number)]);
@@ -35,7 +33,12 @@ function BookBasketPanel({ value, index, bookBasket, setBookBasket }) {
     }),
     onSubmit: (values, { resetForm }) => {
       values["books"] = bookBasket;
-      fetch(endpoints.production + "/submit-books", {
+
+      const api =
+        process.env.NODE_ENV === "development"
+          ? process.env.REACT_APP_DEV_API
+          : process.env.REACT_APP_PRODUCTION_API;
+      fetch(api + "/submit-books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

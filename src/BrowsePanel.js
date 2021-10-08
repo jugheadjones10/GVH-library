@@ -28,7 +28,6 @@ import Skeleton from "@mui/material/Skeleton";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import endpoints from "./api";
 import FilterFormControl from "./FilterFormControl";
 import BrowsePanelBook from "./BrowsePanelBook";
 
@@ -147,10 +146,15 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
         alert(error);
       }
     }
-    fetchData(endpoints.test + "/initial-books", (json) => {
+    const api =
+      process.env.NODE_ENV === "development"
+        ? process.env.REACT_APP_DEV_API
+        : process.env.REACT_APP_PRODUCTION_API;
+    console.log(api);
+    fetchData(api + "/initial-books", (json) => {
       setBooks(json);
     });
-    fetchData(endpoints.test + "/books", (json) => {
+    fetchData(api + "/books", (json) => {
       setBooks((prev) => prev.concat(json));
     });
   }, []);
