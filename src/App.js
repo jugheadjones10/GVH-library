@@ -6,7 +6,6 @@ import "./App.css";
 //that can be accessed with sx.
 
 import React, { useState } from "react";
-import { Helmet } from "react-helmet";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -31,21 +30,9 @@ function App() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const api =
-    process.env.NODE_ENV === "development"
-      ? process.env.REACT_APP_DEV_API
-      : process.env.REACT_APP_PRODUCTION_API;
 
   return (
     <Container maxWidth={aboveMD ? "md" : aboveSM ? "sm" : "xs"}>
-      <Helmet>
-        <link
-          rel="preload"
-          href={api + "/initial-books"}
-          as="fetch"
-          crossorigin="anonymous"
-        />
-      </Helmet>
       <Typography sx={{ color: "#64291B" }} variant="h3" m={3} align="center">
         GVH Library
       </Typography>

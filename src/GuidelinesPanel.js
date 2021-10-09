@@ -7,9 +7,6 @@ import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-
 function GuidelinesPanel({ value, index }) {
   return value === index && <div>Hey</div>;
 }

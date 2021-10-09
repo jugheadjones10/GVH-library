@@ -18,7 +18,6 @@ import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
 import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 function BookBasketPanel({ value, index, bookBasket, setBookBasket }) {
   function onBookRemoved(book) {
