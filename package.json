@@ -9,6 +9,8 @@
     "@mui/lab": "^5.0.0-alpha.47",
     "@mui/material": "^5.0.0",
     "@react-hook/intersection-observer": "^3.1.1",
+    "@sentry/react": "^6.13.3",
+    "@sentry/tracing": "^6.13.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -32,7 +34,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-	  "analyze": "source-map-explorer 'build/static/js/*.js' --html result2.html",
+    "analyze": "source-map-explorer 'build/static/js/*.js' --html result2.html",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
