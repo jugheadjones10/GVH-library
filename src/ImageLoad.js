@@ -26,5 +26,6 @@ function ImageLoad({ bookWidth, bookHeight, blurhash, src }) {
   ) : (
     <img width="100%" height={bookHeight} alt="hey" loading="lazy" src={src} />
   );
+  {/* return (<img width="100%" height={bookHeight} alt="hey" loading="lazy" src={src} />) */}
 }
 export default React.memo(ImageLoad);

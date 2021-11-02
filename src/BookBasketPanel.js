@@ -18,8 +18,9 @@ import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
 import { useTheme } from "@mui/material/styles";
+import BrowsePanelBook from "./BrowsePanelBook";
 
-function BookBasketPanel({ value, index, bookBasket, setBookBasket }) {
+function BookBasketPanel({ value, index, bookBasket, setBookBasket, imageWidth }) {
   function onBookRemoved(book) {
     setBookBasket((x) => [...x.filter((y) => y.number !== book.number)]);
   }
@@ -117,21 +118,12 @@ function BookBasketPanel({ value, index, bookBasket, setBookBasket }) {
           css={{ overflow: "visible" }}
         >
           {bookBasket.map((book) => (
-            <div key={book.number} css={{ position: "relative" }}>
-              <HoverableCancelIcon onClick={() => onBookRemoved(book)} />
-              <Stack>
-                <ImageLoad src={book.imageurl} />
-                <Box
-                  sx={{
-                    color: "white",
-                    p: 1,
-                    bgcolor: "text.secondary",
-                  }}
-                >
-                  {book.title}
-                </Box>
-              </Stack>
-            </div>
+            <BrowsePanelBook
+              key={book.number}
+              book={book}
+              imageWidth={imageWidth}
+             bookBasketOnRemove={onBookRemoved} 
+            />
           ))}
         </Masonry>
 

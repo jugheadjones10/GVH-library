@@ -5,7 +5,7 @@ import "./App.css";
 //I use the emotion css prop UNLESS I need to use one of the custom attributes
 //that can be accessed with sx.
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -22,10 +22,12 @@ import BookBasketPanel from "./BookBasketPanel";
 function App() {
   const [value, setValue] = useState(0);
   const [bookBasket, setBookBasket] = useState([]);
-  const theme = useTheme();
 
-  const aboveSM = useMediaQuery(theme.breakpoints.up("sm"));
-  const aboveMD = useMediaQuery(theme.breakpoints.up("md"));
+  const theme = useTheme();
+  const aboveMD = useMediaQuery(theme.breakpoints.up("md")) ? "md" : false;
+  const aboveSM = useMediaQuery(theme.breakpoints.up("sm")) ? "sm" : false;
+  const aboveXS = useMediaQuery(theme.breakpoints.up("xs")) ? "xs" : false;
+  const imageWidth = useImageWidth(aboveMD, aboveSM, aboveXS);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -58,6 +60,7 @@ function App() {
         bookBasket={bookBasket}
         setBookBasket={setBookBasket}
         setValue={setValue}
+        imageWidth={imageWidth}
       />
       <GuidelinesPanel value={value} index={1} />
       <BookBasketPanel
@@ -65,6 +68,7 @@ function App() {
         index={2}
         bookBasket={bookBasket}
         setBookBasket={setBookBasket}
+        imageWidth={imageWidth}
       />
     </Container>
   );
@@ -84,5 +88,21 @@ const StyledTab = styled(Tab)({
   textTransform: "none",
   fontWeight: "bold",
 });
+
+function useImageWidth(aboveMD, aboveSM, aboveXS) {
+  const [imageWidth, setImageWidth] = useState(0)
+  const widthObject = {
+    md: 206,
+    sm: 177,
+    xs: 201,
+  };
+
+  useEffect(() => {
+    const which = aboveMD || aboveSM || aboveXS;
+    setImageWidth(widthObject[which])
+  }, [aboveMD, aboveSM, aboveXS])
+
+  return imageWidth
+}
 
 export default App;

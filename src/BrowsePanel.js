@@ -35,22 +35,8 @@ const heights = [
   150, 100, 160, 190, 110, 250, 130, 200, 130, 90, 100, 150, 190, 170, 80, 150,
   100, 150, 230, 110, 150, 130, 100, 120, 90, 100, 150, 90, 190, 110,
 ];
-function useImageWidth(theme) {
-  const widthObject = {
-    md: 206,
-    sm: 177,
-    xs: 201,
-  };
 
-  const aboveMD = useMediaQuery(theme.breakpoints.up("md")) ? "md" : false;
-  const aboveSM = useMediaQuery(theme.breakpoints.up("sm")) ? "sm" : false;
-  const aboveXS = useMediaQuery(theme.breakpoints.up("xs")) ? "xs" : false;
-
-  const which = aboveMD || aboveSM || aboveXS;
-  console.log("WHICH" + widthObject[which]);
-  return widthObject[which];
-}
-function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
+function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, imageWidth }) {
   const [books, setBooks] = useState([]);
   const [pageSize, setPageSize] = useState(0);
   const [isChoosing, setChoosing] = useState(false);
@@ -58,16 +44,11 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
   const [ref, setRef] = useState();
   const { isIntersecting } = useIntersectionObserver(ref);
 
-  const widthRef = useRef(null);
-  const masonWidth = useElementWidth(widthRef, books);
+  // const widthRef = useRef(null);
+  // const masonWidth = useElementWidth(widthRef, books);
 
   const theme = useTheme();
-  const imageWidth = useImageWidth(theme);
   const aboveMD = useMediaQuery(theme.breakpoints.up("md"));
-
-  useEffect(() => {
-    console.log(masonWidth);
-  }, [masonWidth]);
 
   useEffect(() => {
     setPageSize((size) => size + 20);
@@ -76,6 +57,7 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
   //Search
   const [search, setSearch] = useState("");
   const processedBooks = useSearch(books, search);
+  // const processedBooks = books
 
   //Filter
   const [series, setSeries] = useState("");
@@ -136,6 +118,38 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
   );
 
   useEffect(() => {
+
+    // async function oof(){
+    //   const res = await fetch("https://gvh-library-worker.gvh-library.workers.dev/number") 
+    //   const number = await res.json()
+    //   console.log("NUMBER", number)
+
+    //   const maxPages = Math.ceil(number/49)
+    //   console.log("MAX PAGES", maxPages)
+
+
+    //   for(var page = 0; page <= maxPages; page++){
+
+    //     try{
+    //       fetch("https://gvh-library-worker.gvh-library.workers.dev/page/" + page)
+    //         .then((res) => res.json())
+    //         .then((json) => {
+    //           if(json.length > 0){
+    //             console.log("FETCHED PAGE", json.length)
+    //             setBooks((prev) => prev.concat(json));
+    //           }
+    //         })
+    //       // const res = await fetch("https://gvh-library-worker.gvh-library.workers.dev/page/" + page)
+    //       // const json = await res.json()
+    //       // console.log("FETCHED PAGE", json.length)
+    //       // setBooks((prev) => prev.concat(json));
+    //     }catch(e){
+    //       console.log("Error,,,,,", e)
+    //     }
+    //   }
+    // }
+    // oof()
+
     async function fetchData(url, processResponse) {
       try {
         const response = await fetch(url, { mode: "cors" });
@@ -150,7 +164,6 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
       process.env.NODE_ENV === "development"
         ? process.env.REACT_APP_DEV_API
         : process.env.REACT_APP_PRODUCTION_API;
-    console.log(api);
     fetchData(api + "/initial-books", (json) => {
       setBooks(json);
     });
@@ -231,28 +244,28 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue }) {
         columnClassName="masonry-column"
         css={{ overflow: "visible" }}
       >
-        <div key="sizeListener" ref={widthRef} css={{ marginTop: "-10px" }}>
-          <Skeleton variant="rectangular" height="0px" width="100%" />
-        </div>
+        {/* <div key="sizeListener" ref={widthRef} css={{ marginTop: "-10px" }}> */}
+        {/*   <Skeleton variant="rectangular" height="0px" width="100%" /> */}
+        {/* </div> */}
         {processedBooks.length === 0 && books.length === 0
           ? heights.map((height, index) => (
-              <div key={index}>
-                <Skeleton variant="rectangular" height={height} />
-              </div>
-            ))
+            <div key={index}>
+              <Skeleton variant="rectangular" height={height} />
+            </div>
+          ))
           : processedBooks
-              .filter(filterFunction)
-              .slice(0, pageSize)
-              .map((book) => (
-                <BrowsePanelBook
-                  key={book.number}
-                  book={book}
-                  imageWidth={imageWidth}
-                  isChoosing={isChoosing}
-                  isChosen={isChosen}
-                  onBookClicked={onBookClicked}
-                />
-              ))}
+            .filter(filterFunction)
+            .slice(0, pageSize)
+            .map((book) => (
+              <BrowsePanelBook
+                key={book.number}
+                book={book}
+                imageWidth={imageWidth}
+                isChoosing={isChoosing}
+                isChosen={isChosen}
+                onBookClicked={onBookClicked}
+              />
+            ))}
         <div key="listener" ref={setRef}>
           <Skeleton variant="rectangular" height="50px" width="100%" />
         </div>
@@ -325,7 +338,6 @@ function useElementWidth(ref, books) {
     window.addEventListener("resize", onResize);
 
     return () => {
-      window.removeEventListener("resize", onResize);
     };
   }, [onResize]);
 
