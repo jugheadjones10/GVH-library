@@ -4,7 +4,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { Blurhash } from "react-blurhash";
 
-function ImageLoad({ bookWidth, bookHeight, blurhash, src }) {
+function ImageLoad({ bookHeight, blurhash, src }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function ImageLoad({ bookWidth, bookHeight, blurhash, src }) {
     };
   }, [src]);
 
-  return loading ? (
+ return loading ? (
     blurhash ? (
       <Blurhash hash={blurhash} width="100%" height={bookHeight} />
     ) : (
@@ -26,6 +26,5 @@ function ImageLoad({ bookWidth, bookHeight, blurhash, src }) {
   ) : (
     <img width="100%" height={bookHeight} alt="hey" loading="lazy" src={src} />
   );
-  {/* return (<img width="100%" height={bookHeight} alt="hey" loading="lazy" src={src} />) */}
 }
 export default React.memo(ImageLoad);

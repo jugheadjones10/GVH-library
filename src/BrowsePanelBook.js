@@ -46,7 +46,7 @@ function BrowsePanelBook({
       >
         {book.title}
       </Box>
-    </Stack>
+   </Stack>
   )
 
   return (
@@ -59,7 +59,6 @@ function BrowsePanelBook({
         bookHeight={
           book.imageurl ? (book.height / book.width) * imageWidth : null
         }
-        bookWidth={book.imageurl ? imageWidth : null}
         blurhash={book.blurhash}
         src={
           book.imageurl

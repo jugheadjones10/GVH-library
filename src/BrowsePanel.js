@@ -14,6 +14,7 @@ import React, {
 import useIntersectionObserver from "@react-hook/intersection-observer";
 import FlexSearch from "flexsearch";
 import Masonry from "react-masonry-css";
+import useSWR from 'swr'
 
 import Box from "@mui/material/Box";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -36,8 +37,36 @@ const heights = [
   100, 150, 230, 110, 150, 130, 100, 120, 90, 100, 150, 90, 190, 110,
 ];
 
+
+const fetcher = (endpoint) => {
+  const api =
+    process.env.NODE_ENV === "development"
+    ? process.env.REACT_APP_DEV_API
+    : process.env.REACT_APP_PRODUCTION_API;
+
+  return fetch(api + endpoint).then(res => res.json())
+}
+
+function useBooks () {
+  const [combined, setCombined] = useState([])
+  const { data: initialData, error: initialError} = useSWR("/initial-books", fetcher)
+  const { data, error } = useSWR("/books", fetcher)
+
+  useEffect(() => {
+    console.log("Initial Data", initialData)
+    console.log("Data", data)
+    setCombined([].concat(initialData ? initialData : [], data ? data : []))
+  }, [initialData, data]);
+
+  return {
+    books: combined,
+    isLoading: !initialError && !error && !initialData && !data,
+    isError: initialError || error
+  }
+}
+
 function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, imageWidth }) {
-  const [books, setBooks] = useState([]);
+  const { books} = useBooks()
   const [pageSize, setPageSize] = useState(0);
   const [isChoosing, setChoosing] = useState(false);
 
@@ -57,7 +86,6 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
   //Search
   const [search, setSearch] = useState("");
   const processedBooks = useSearch(books, search);
-  // const processedBooks = books
 
   //Filter
   const [series, setSeries] = useState("");
@@ -149,27 +177,6 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
     //   }
     // }
     // oof()
-
-    async function fetchData(url, processResponse) {
-      try {
-        const response = await fetch(url, { mode: "cors" });
-        const json = await response.json();
-        processResponse(json);
-      } catch (error) {
-        console.log(error);
-        alert(error);
-      }
-    }
-    const api =
-      process.env.NODE_ENV === "development"
-        ? process.env.REACT_APP_DEV_API
-        : process.env.REACT_APP_PRODUCTION_API;
-    fetchData(api + "/initial-books", (json) => {
-      setBooks(json);
-    });
-    fetchData(api + "/books", (json) => {
-      setBooks((prev) => prev.concat(json));
-    });
   }, []);
 
   //add shuffle button
