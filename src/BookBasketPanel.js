@@ -37,7 +37,7 @@ function BookBasketPanel({ value, index, bookBasket, setBookBasket, imageWidth }
       const api =
         process.env.NODE_ENV === "development"
           ? process.env.REACT_APP_DEV_API
-          : process.env.REACT_APP_PRODUCTION_API;
+          : process.env.REACT_APP_FORM_SUBMISSION_API
       fetch(api + "/submit-books", {
         method: "POST",
         headers: {

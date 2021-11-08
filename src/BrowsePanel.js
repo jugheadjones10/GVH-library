@@ -58,6 +58,8 @@ function useBooks () {
     setCombined([].concat(initialData ? initialData : [], data ? data : []))
   }, [initialData, data]);
 
+  console.log("ERROR", initialError)
+
   return {
     books: combined,
     isLoading: !initialError && !error && !initialData && !data,
@@ -66,7 +68,7 @@ function useBooks () {
 }
 
 function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, imageWidth }) {
-  const { books} = useBooks()
+  const { books, isLoading, isError } = useBooks()
   const [pageSize, setPageSize] = useState(0);
   const [isChoosing, setChoosing] = useState(false);
 
@@ -123,7 +125,7 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
   const isChosen = useCallback(
     (bookNumber) => {
       return bookBasket.filter((x) => x.number === bookNumber).length > 0;
-    },
+   },
     [bookBasket]
   );
 
@@ -180,6 +182,8 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
   }, []);
 
   //add shuffle button
+  
+  if(isError){return <div>Error</div>}
   return (
     <div css={{ display: value === index ? null : "none" }}>
       <Box
@@ -254,8 +258,8 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
         {/* <div key="sizeListener" ref={widthRef} css={{ marginTop: "-10px" }}> */}
         {/*   <Skeleton variant="rectangular" height="0px" width="100%" /> */}
         {/* </div> */}
-        {processedBooks.length === 0 && books.length === 0
-          ? heights.map((height, index) => (
+        {isLoading ?
+           heights.map((height, index) => (
             <div key={index}>
               <Skeleton variant="rectangular" height={height} />
             </div>
