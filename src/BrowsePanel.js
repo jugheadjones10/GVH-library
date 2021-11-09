@@ -147,42 +147,6 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
     [setBookBasket, isChosen]
   );
 
-  useEffect(() => {
-
-    // async function oof(){
-    //   const res = await fetch("https://gvh-library-worker.gvh-library.workers.dev/number") 
-    //   const number = await res.json()
-    //   console.log("NUMBER", number)
-
-    //   const maxPages = Math.ceil(number/49)
-    //   console.log("MAX PAGES", maxPages)
-
-
-    //   for(var page = 0; page <= maxPages; page++){
-
-    //     try{
-    //       fetch("https://gvh-library-worker.gvh-library.workers.dev/page/" + page)
-    //         .then((res) => res.json())
-    //         .then((json) => {
-    //           if(json.length > 0){
-    //             console.log("FETCHED PAGE", json.length)
-    //             setBooks((prev) => prev.concat(json));
-    //           }
-    //         })
-    //       // const res = await fetch("https://gvh-library-worker.gvh-library.workers.dev/page/" + page)
-    //       // const json = await res.json()
-    //       // console.log("FETCHED PAGE", json.length)
-    //       // setBooks((prev) => prev.concat(json));
-    //     }catch(e){
-    //       console.log("Error,,,,,", e)
-    //     }
-    //   }
-    // }
-    // oof()
-  }, []);
-
-  //add shuffle button
-  
   if(isError){return <div>Error</div>}
   return (
     <div css={{ display: value === index ? null : "none" }}>

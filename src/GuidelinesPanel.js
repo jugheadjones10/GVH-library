@@ -8,7 +8,17 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 
 function GuidelinesPanel({ value, index }) {
-  return value === index && <div>Hey</div>;
+  return value === index && (
+    <>
+    <h3>Guidelines for borrowing books</h3>
+      <ol>
+        <li>Do not damage books</li>
+        <li>Return all books</li>
+        <li>If there are any damages, report to Joseph/Philip</li>
+        <li><b>Each home may borrow up to 20 books for 4 weeks</b></li>
+      </ol>
+    </>
+  );
 }
 
 export default GuidelinesPanel;
