@@ -95,7 +95,6 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
     const socket = socketIOClient(api);
     socket.on("update", data => {
       console.log("NEW")
-      alert("IO")
       mutate('/initial-books')
       mutate('/books')
     });
