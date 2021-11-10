@@ -151,8 +151,8 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
         setBookBasket((x) => x.filter((y) => y.number !== book.number));
       } else {
         setBookBasket((x) => {
-          if (x.length === 30) {
-            alert("You cannot choose more than 30 books");
+          if (x.length === 20) {
+            alert("You cannot choose more than 20 books");
             return x;
           } else {
             return [...x, book];
