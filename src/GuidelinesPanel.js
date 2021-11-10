@@ -10,6 +10,7 @@ import { styled } from "@mui/material/styles";
 function GuidelinesPanel({ value, index }) {
   return value === index && (
     <>
+      <br></br>
     <h3>Guidelines for borrowing books</h3>
       <ol>
         <li>Do not damage books</li>

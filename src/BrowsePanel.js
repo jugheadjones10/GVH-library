@@ -14,7 +14,8 @@ import React, {
 import useIntersectionObserver from "@react-hook/intersection-observer";
 import FlexSearch from "flexsearch";
 import Masonry from "react-masonry-css";
-import useSWR from 'swr'
+import useSWR, {useSWRConfig} from 'swr'
+import socketIOClient from "socket.io-client";
 
 import Box from "@mui/material/Box";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -68,6 +69,7 @@ function useBooks () {
 }
 
 function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, imageWidth }) {
+  const { mutate } = useSWRConfig()
   const { books, isLoading, isError } = useBooks()
   const [pageSize, setPageSize] = useState(0);
   const [isChoosing, setChoosing] = useState(false);
@@ -84,6 +86,19 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
   useEffect(() => {
     setPageSize((size) => size + 20);
   }, [isIntersecting]);
+
+  useEffect(() => {
+    const api =  process.env.NODE_ENV === "development"
+      ? process.env.REACT_APP_DEV_FORM_SUBMISSION_API
+      : process.env.REACT_APP_PRODUCTION_FORM_SUBMISSION_API
+
+    const socket = socketIOClient(api);
+    socket.on("update", data => {
+      mutate('/initial-books')
+      mutate('/books')
+    });
+
+  }, []);
 
   //Search
   const [search, setSearch] = useState("");
@@ -125,7 +140,7 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
   const isChosen = useCallback(
     (bookNumber) => {
       return bookBasket.filter((x) => x.number === bookNumber).length > 0;
-   },
+    },
     [bookBasket]
   );
 
@@ -223,12 +238,12 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
         {/*   <Skeleton variant="rectangular" height="0px" width="100%" /> */}
         {/* </div> */}
         {isLoading ?
-           heights.map((height, index) => (
-            <div key={index}>
-              <Skeleton variant="rectangular" height={height} />
-            </div>
-          ))
-          : processedBooks
+            heights.map((height, index) => (
+              <div key={index}>
+                <Skeleton variant="rectangular" height={height} />
+              </div>
+            ))
+            : processedBooks
             .filter(filterFunction)
             .slice(0, pageSize)
             .map((book) => (
