@@ -20,13 +20,17 @@ import Backdrop from "@mui/material/Backdrop";
 import { useTheme } from "@mui/material/styles";
 import BrowsePanelBook from "./BrowsePanelBook";
 
+const submissionEndpoint = process.env.NODE_ENV === "development"
+      ? process.env.REACT_APP_DEV_FORM_SUBMISSION_API
+      : process.env.REACT_APP_PRODUCTION_FORM_SUBMISSION_API
+
 function BookBasketPanel({ value, index, bookBasket, setBookBasket, imageWidth }) {
   function onBookRemoved(book) {
     setBookBasket((x) => [...x.filter((y) => y.number !== book.number)]);
   }
   const theme = useTheme();
 
-  const formik = useFormik({
+ const formik = useFormik({
     initialValues: { home: "" },
     validationSchema: Yup.object({
       home: Yup.string().required("Please input a value"),
@@ -34,11 +38,7 @@ function BookBasketPanel({ value, index, bookBasket, setBookBasket, imageWidth }
     onSubmit: (values, { resetForm }) => {
       values["books"] = bookBasket;
 
-      const api =
-        process.env.NODE_ENV === "development"
-          ? process.env.REACT_APP_DEV_FORM_SUBMISSION_API
-          : process.env.REACT_APP_PRODUCTION_FORM_SUBMISSION_API
-      fetch(api + "/submit-books", {
+      fetch(submissionEndpoint + "/submit-books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,13 +139,5 @@ function BookBasketPanel({ value, index, bookBasket, setBookBasket, imageWidth }
     )
   );
 }
-
-const HoverableCancelIcon = styled(CancelIcon)({
-  position: "absolute",
-  top: 1,
-  left: 1,
-  color: "white",
-  "&:hover": { color: "black" },
-});
 
 export default BookBasketPanel;

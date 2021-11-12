@@ -23,7 +23,7 @@ function FilterFormControl({ value, setValue, options, label }) {
         label={label}
         onChange={(event) => {
           setValue(event.target.value);
-        }}
+       }}
       >
         <MenuItem value="" sx={{ color: "text.disabled" }}>
           None

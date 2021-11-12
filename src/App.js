@@ -31,7 +31,7 @@ function App() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
+ };
 
   return (
     <Container maxWidth={aboveMD ? "md" : aboveSM ? "sm" : "xs"}>

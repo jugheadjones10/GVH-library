@@ -103,7 +103,7 @@ function BrowsePanelBook({
             </Box>
           ) : (
             <CheckBoxOutlineBlankIcon
-              fontSize="large"
+             fontSize="large"
               css={{
                 position: "absolute",
                 color: "white",

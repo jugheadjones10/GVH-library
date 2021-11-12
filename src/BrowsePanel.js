@@ -6,7 +6,6 @@ import "antd/dist/antd.css";
 import React, {
   useState,
   useEffect,
-  useRef,
   useMemo,
   useCallback,
 } from "react";
@@ -38,68 +37,28 @@ const heights = [
   100, 150, 230, 110, 150, 130, 100, 120, 90, 100, 150, 90, 190, 110,
 ];
 
-
-const fetcher = (endpoint) => {
-  const api =
-    process.env.NODE_ENV === "development"
+const dataEndpoint = process.env.NODE_ENV === "development"
     ? process.env.REACT_APP_DEV_API
     : process.env.REACT_APP_PRODUCTION_API;
 
-  return fetch(api + endpoint).then(res => res.json())
-}
-
-function useBooks () {
-  const [combined, setCombined] = useState([])
-  const { data: initialData, error: initialError} = useSWR("/initial-books", fetcher)
-  const { data, error } = useSWR("/books", fetcher)
-
-  useEffect(() => {
-    console.log("Initial Data", initialData)
-    console.log("Data", data)
-    setCombined([].concat(initialData ? initialData : [], data ? data : []))
-  }, [initialData, data]);
-
-  console.log("ERROR", initialError)
-
-  return {
-    books: combined,
-    isLoading: !initialError && !error && !initialData && !data,
-    isError: initialError || error
-  }
-}
-
-function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, imageWidth }) {
-  const { mutate } = useSWRConfig()
-  const { books, isLoading, isError } = useBooks()
-  const [pageSize, setPageSize] = useState(0);
-  const [isChoosing, setChoosing] = useState(false);
-
-  const [ref, setRef] = useState();
-  const { isIntersecting } = useIntersectionObserver(ref);
-
-  // const widthRef = useRef(null);
-  // const masonWidth = useElementWidth(widthRef, books);
-
-  const theme = useTheme();
-  const aboveMD = useMediaQuery(theme.breakpoints.up("md"));
-
-  useEffect(() => {
-    setPageSize((size) => size + 20);
-  }, [isIntersecting]);
-
-  useEffect(() => {
-    const api =  process.env.NODE_ENV === "development"
+const submissionEndpoint = process.env.NODE_ENV === "development"
       ? process.env.REACT_APP_DEV_FORM_SUBMISSION_API
       : process.env.REACT_APP_PRODUCTION_FORM_SUBMISSION_API
 
-    const socket = socketIOClient(api);
-    socket.on("update", data => {
-      console.log("NEW")
-      mutate('/initial-books')
-      mutate('/books')
-    });
+const fetcher = path => fetch(dataEndpoint + path).then(res => res.json()) 
 
-  }, []);
+
+function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, imageWidth }) {
+
+  const { mutate } = useSWRConfig()
+  const { books, isLoading, isError } = useBooks()
+
+  const [isChoosing, setChoosing] = useState(false);
+
+  //Pagination
+  const [pageSize, setPageSize] = useState(0);
+  const [ref, setRef] = useState();
+  const { isIntersecting } = useIntersectionObserver(ref);
 
   //Search
   const [search, setSearch] = useState("");
@@ -110,23 +69,41 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
   const [language, setLanguage] = useState("");
   const [category, setCategory] = useState("");
 
-  //Potential error - if the monitor is too big, the "isIntersecting dummy div" might be visible in viewport
-  //even though 20 elements are displayed. That means there will be no more changes to "isIntersecting"
-  //when search or filters are changed, and page size will be stuck at 20
+  const theme = useTheme();
+  const aboveMD = useMediaQuery(theme.breakpoints.up("md"));
+
+  useEffect(() => {
+    setPageSize((size) => size + 20);
+  }, [isIntersecting]);
+
   useEffect(() => {
     setPageSize(20);
   }, [value, search, series, language, category]);
 
+  useEffect(() => {
+    const socket = socketIOClient(submissionEndpoint);
+    socket.on("update", data => {
+      console.log("Updated")
+      mutate('/initial-books')
+      mutate('/books')
+    });
+  }, []);
+
+
+  //Potential error - if the monitor is too big, the "isIntersecting dummy div" might be visible in viewport
+  //even though 20 elements are displayed. That means there will be no more changes to "isIntersecting"
+  //when search or filters are changed, and page size will be stuck at 20
+
   const categories = useMemo(
-    () => [...new Set(books.map((x) => x.category).filter((x) => x))],
+    () => [...new Set(books.map((x) => x.category))],
     [books]
   );
   const serieses = useMemo(
-    () => [...new Set(books.map((x) => x.series).filter((x) => x))],
+    () => [...new Set(books.map((x) => x.series))],
     [books]
   );
   const languages = useMemo(
-    () => [...new Set(books.map((x) => x.language).filter((x) => x))],
+    () => [...new Set(books.map((x) => x.language))],
     [books]
   );
 
@@ -235,9 +212,6 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
         columnClassName="masonry-column"
         css={{ overflow: "visible" }}
       >
-        {/* <div key="sizeListener" ref={widthRef} css={{ marginTop: "-10px" }}> */}
-        {/*   <Skeleton variant="rectangular" height="0px" width="100%" /> */}
-        {/* </div> */}
         {isLoading ?
             heights.map((height, index) => (
               <div key={index}>
@@ -315,26 +289,27 @@ function BrowserPanel({ value, index, bookBasket, setBookBasket, setValue, image
   );
 }
 
-function useElementWidth(ref, books) {
-  const [width, setWidth] = useState(0);
-
-  const onResize = useCallback(() => {
-    const node = ref.current;
-    if (node) {
-      setWidth(node.offsetWidth);
-    }
-  }, [ref]);
+function useBooks () {
+  const [combined, setCombined] = useState([])
+  const { data: initialData, error: initialError} = useSWR("/initial-books", fetcher)
+  const { data, error } = useSWR("/books", fetcher)
 
   useEffect(() => {
-    window.addEventListener("resize", onResize);
+    console.log("Initial Data", initialData)
+    console.log("Data", data)
+    setCombined([].concat(initialData ? initialData : [], data ? data : []))
+  }, [initialData, data]);
 
-    return () => {
-    };
-  }, [onResize]);
+  if(error || initialError){
+    console.log("Initial error", initialError)
+    console.log("Error", error)
+  }
 
-  useEffect(() => onResize(), [books]);
-
-  return width;
+  return {
+    books: combined,
+    isLoading: !initialError && !error && !initialData && !data,
+    isError: initialError || error
+  }
 }
 
 function useSearch(items, searchTerm) {
